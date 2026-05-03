@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NerveSight — AI Customs Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0A0E17;
+  --ink-muted: #4A5568;
+  --ink-faint: #8896A8;
+  --surface: #F5F3EE;
+  --surface-card: #FFFFFF;
+  --accent: #1B4FFF;
+  --accent-warm: #FF4B1F;
+  --accent-teal: #00B27A;
+  --border: rgba(10,14,23,0.10);
+  --border-strong: rgba(10,14,23,0.20);
+  --mono: 'IBM Plex Mono', monospace;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'Instrument Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── GRID OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(27,79,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(27,79,255,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 3rem;
+  background: rgba(245,243,238,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo-mark {
+  width: 28px; height: 28px;
+  background: var(--accent);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.nav-logo-mark svg { width: 16px; height: 16px; }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--surface);
+  background: var(--ink);
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--accent); }
+
+/* ── SECTIONS ── */
+section { position: relative; z-index: 1; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 8rem 3rem 4rem;
+  gap: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.hero-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-label::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 5vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.75rem;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--ink-muted);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.btn-primary {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  padding: 14px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: #0A3AE0; transform: translateY(-1px); }
+
+.btn-ghost {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.btn-ghost:hover { color: var(--ink); }
+
+/* ── HERO VISUAL ── */
+.hero-visual {
+  position: relative;
+  height: 520px;
+}
+
+.shipment-card {
+  position: absolute;
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 40px rgba(10,14,23,0.08);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.shipment-card:nth-child(1) { top: 0; left: 0; width: 300px; animation-delay: 0s; }
+.shipment-card:nth-child(2) { top: 40px; right: 0; width: 260px; animation-delay: 1.5s; }
+.shipment-card:nth-child(3) { bottom: 60px; left: 40px; width: 280px; animation-delay: 3s; }
+.shipment-card:nth-child(4) { bottom: 10px; right: 20px; width: 240px; animation-delay: 2s; }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.dot-green { background: var(--accent-teal); }
+.dot-red { background: var(--accent-warm); }
+.dot-blue { background: var(--accent); }
+.dot-amber { background: #F59E0B; }
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12px;
+  padding: 3px 0;
+}
+
+.card-row .key { color: var(--ink-faint); }
+.card-row .val { color: var(--ink); font-weight: 500; font-family: var(--mono); font-size: 11px; }
+.card-row .val.flag { color: var(--accent-warm); }
+.card-row .val.ok { color: var(--accent-teal); }
+
+.alert-strip {
+  background: rgba(255,75,31,0.08);
+  border-left: 2px solid var(--accent-warm);
+  border-radius: 0 4px 4px 0;
+  padding: 6px 10px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #C73A0F;
+  font-family: var(--mono);
+}
+
+.ok-strip {
+  background: rgba(0,178,122,0.08);
+  border-left: 2px solid var(--accent-teal);
+  border-radius: 0 4px 4px 0;
+  padding: 6px 10px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #00875C;
+  font-family: var(--mono);
+}
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--ink);
+  padding: 14px 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 3rem;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.marquee-item span { color: rgba(255,255,255,0.2); }
+
+/* ── PROBLEM SECTION ── */
+.problem-section {
+  padding: 8rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+}
+
+.problem-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 700px;
+  margin-bottom: 5rem;
+}
+
+.problem-section h2 em {
+  font-style: italic;
+  color: var(--accent-warm);
+}
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.problem-cell {
+  background: var(--surface);
+  padding: 2.5rem;
+  transition: background 0.2s;
+}
+
+.problem-cell:hover { background: #EDEAE2; }
+
+.problem-num {
+  font-family: var(--serif);
+  font-size: 4rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.num-blue { color: var(--accent); }
+.num-red { color: var(--accent-warm); }
+.num-teal { color: var(--accent-teal); }
+
+.problem-unit {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.problem-cell p {
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.7;
+}
+
+/* ── PRODUCT SECTION ── */
+.product-section {
+  padding: 8rem 3rem;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-section::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(27,79,255,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.product-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.product-section .section-label { color: rgba(255,255,255,0.3); }
+
+.product-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #fff;
+  max-width: 600px;
+  margin-bottom: 5rem;
+}
+
+.product-section h2 em {
+  font-style: italic;
+  color: rgba(27,79,255,0.9);
+}
+
+.product-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 5rem;
+}
+
+.flow-step {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.flow-step-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 1rem;
+}
+
+.flow-step-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.flow-step-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+}
+
+.flow-arrow {
+  color: rgba(27,79,255,0.5);
+  font-size: 24px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.feature-card {
+  background: rgba(10,14,23,0.8);
+  padding: 2.5rem;
+}
+
+.feature-icon {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.25rem;
+  font-size: 18px;
+}
+
+.icon-blue { background: rgba(27,79,255,0.15); }
+.icon-teal { background: rgba(0,178,122,0.15); }
+.icon-warm { background: rgba(255,75,31,0.15); }
+.icon-amber { background: rgba(245,158,11,0.15); }
+
+.feature-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.6rem;
+}
+
+.feature-card p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+}
+
+/* ── MARKET SECTION ── */
+.market-section {
+  padding: 8rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.market-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 600px;
+  margin-bottom: 5rem;
+}
+
+.market-section h2 em { font-style: italic; color: var(--accent-teal); }
+
+.market-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.market-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stat-row {
+  background: var(--surface);
+  padding: 1.75rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.2s;
+}
+
+.stat-row:hover { background: #EDEAE2; }
+
+.stat-label {
+  font-size: 14px;
+  color: var(--ink-muted);
+  max-width: 240px;
+}
+
+.stat-value {
+  font-family: var(--serif);
+  font-size: 2rem;
+  letter-spacing: -0.03em;
+  text-align: right;
+}
+
+.stat-value.blue { color: var(--accent); }
+.stat-value.red { color: var(--accent-warm); }
+.stat-value.teal { color: var(--accent-teal); }
+.stat-value.amber { color: #D97706; }
+
+.market-text h3 {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.market-text p {
+  font-size: 15px;
+  color: var(--ink-muted);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.insight-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.insight-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.insight-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.dot-accent { background: var(--accent); }
+
+.insight-item p {
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── MOAT SECTION ── */
+.moat-section {
+  padding: 8rem 3rem;
+  background: #0D1420;
+  position: relative;
+  overflow: hidden;
+}
+
+.moat-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.moat-section .section-label { color: rgba(255,255,255,0.3); }
+
+.moat-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #fff;
+  max-width: 580px;
+  margin-bottom: 5rem;
+}
+
+.moat-section h2 em { font-style: italic; color: var(--accent-teal); }
+
+.moat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.moat-card {
+  background: #0A0E17;
+  padding: 2.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.moat-card::before {
+  content: attr(data-num);
+  position: absolute;
+  top: -20px; right: -10px;
+  font-family: var(--serif);
+  font-size: 9rem;
+  color: rgba(255,255,255,0.02);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.moat-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  padding-top: 3rem;
+}
+
+.moat-card p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.75;
+}
+
+.moat-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.tag-blue { background: rgba(27,79,255,0.15); color: #7B9FFF; }
+.tag-teal { background: rgba(0,178,122,0.15); color: #4DD9A8; }
+.tag-warm { background: rgba(255,75,31,0.15); color: #FF8A6A; }
+
+/* ── WHY NOW ── */
+.whynow-section {
+  padding: 8rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.whynow-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 600px;
+  margin-bottom: 5rem;
+}
+
+.whynow-section h2 em { font-style: italic; color: var(--accent); }
+
+.timeline {
+  position: relative;
+  padding-left: 3rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent), var(--border) 90%);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 3rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -3.4rem;
+  top: 8px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.timeline-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-item h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-item p {
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+/* ── FOUNDER ── */
+.founder-section {
+  padding: 8rem 3rem;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.founder-section::before {
+  content: '';
+  position: absolute;
+  bottom: -100px; left: -100px;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,178,122,0.08) 0%, transparent 70%);
+}
+
+.founder-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.founder-section .section-label { color: rgba(255,255,255,0.3); margin-bottom: 2rem; }
+
+.founder-avatar {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1B4FFF 0%, #00B27A 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.founder-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.founder-name {
+  font-family: var(--serif);
+  font-size: 3rem;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.founder-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 2rem;
+}
+
+.founder-bio {
+  font-size: 15px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.founder-quote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2.5rem 0;
+}
+
+.founder-quote blockquote {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.founder-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2rem;
+}
+
+.founder-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  color: rgba(255,255,255,0.4);
+}
+
+.founder-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.founder-stat {
+  background: rgba(10,14,23,0.6);
+  padding: 2rem;
+}
+
+.founder-stat-val {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.founder-stat-lbl {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #060912;
+  padding: 3rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 2rem; min-height: auto; }
+  .hero-visual { height: 380px; }
+  .problem-grid { grid-template-columns: 1fr; }
+  .product-flow { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); }
+  .feature-grid { grid-template-columns: 1fr; }
+  .market-layout { grid-template-columns: 1fr; }
+  .moat-grid { grid-template-columns: 1fr; }
+  .founder-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .problem-section, .product-section, .market-section, .moat-section, .whynow-section, .founder-section { padding: 5rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="3" fill="white"/>
+        <path d="M8 1v3M8 12v3M1 8h3M12 8h3" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    NerveSight
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#product">Product</a></li>
+    <li><a href="#market">Market</a></li>
+    <li><a href="#moat">Moat</a></li>
+    <li><a href="#founder">Founder</a></li>
+  </ul>
+  <a class="nav-cta" href="#founder">Request Access →</a>
+</nav>
+
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-label">AI Customs Intelligence</div>
+      <h1>Stop losing money at <em>the border.</em></h1>
+      <p class="hero-sub">NerveSight reads every customs document in a shipment — invoices, bills of lading, certificates of origin — and catches errors before they become $4,000 demurrage charges.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#product">See How It Works →</a>
+        <a class="btn-ghost" href="#founder">Meet the founder ↗</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <!-- Card 1 -->
+      <div class="shipment-card">
+        <div class="card-header">
+          <span class="card-title">Shipment · SHP-20491</span>
+          <div class="status-dot dot-red"></div>
+        </div>
+        <div class="card-row"><span class="key">HS Code (declared)</span><span class="val flag">8471.30.01</span></div>
+        <div class="card-row"><span class="key">Country of Origin</span><span class="val">Vietnam</span></div>
+        <div class="card-row"><span class="key">Incoterms</span><span class="val">CFR Singapore</span></div>
+        <div class="card-row"><span class="key">Invoice Value</span><span class="val">$84,200</span></div>
+        <div class="alert-strip">⚠ HS code mismatch — component origin triggers 8471.30.20 under US HTS</div>
+      </div>
+      <!-- Card 2 -->
+      <div class="shipment-card">
+        <div class="card-header">
+          <span class="card-title">Document Check · INV-7741</span>
+          <div class="status-dot dot-green"></div>
+        </div>
+        <div class="card-row"><span class="key">Declared weight</span><span class="val ok">4,200 kg</span></div>
+        <div class="card-row"><span class="key">Packing list weight</span><span class="val ok">4,200 kg</span></div>
+        <div class="card-row"><span class="key">B/L weight</span><span class="val ok">4,202 kg</span></div>
+        <div class="ok-strip">✓ All documents cross-validated — ready to file</div>
+      </div>
+      <!-- Card 3 -->
+      <div class="shipment-card">
+        <div class="card-header">
+          <span class="card-title">Tariff Alert · Q3 2025</span>
+          <div class="status-dot dot-amber"></div>
+        </div>
+        <div class="card-row"><span class="key">Current duty rate</span><span class="val flag">7.5%</span></div>
+        <div class="card-row"><span class="key">CBP effective date</span><span class="val">Sep 27, 2025</span></div>
+        <div class="card-row"><span class="key">Your last import</span><span class="val">Aug 14, 2025</span></div>
+        <div class="alert-strip">⚠ Schedule change detected — re-classify before next shipment</div>
+      </div>
+      <!-- Card 4 -->
+      <div class="shipment-card">
+        <div class="card-header">
+          <span class="card-title">Entry Draft · PRE-3312</span>
+          <div class="status-dot dot-blue"></div>
+        </div>
+        <div class="card-row"><span class="key">Fields extracted</span><span class="val ok">34/34</span></div>
+        <div class="card-row"><span class="key">Confidence</span><span class="val ok">99.1%</span></div>
+        <div class="card-row"><span class="key">Time to file-ready</span><span class="val ok">4 min</span></div>
+        <div class="ok-strip">✓ Draft ready for broker sign-off</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">CBP Customs Compliance <span>·</span></div>
+    <div class="marquee-item">HS Code Classification <span>·</span></div>
+    <div class="marquee-item">Import Duty Optimization <span>·</span></div>
+    <div class="marquee-item">Document Cross-Validation <span>·</span></div>
+    <div class="marquee-item">Trade Compliance AI <span>·</span></div>
+    <div class="marquee-item">Entry Error Prevention <span>·</span></div>
+    <div class="marquee-item">Tariff Schedule Intelligence <span>·</span></div>
+    <div class="marquee-item">Origin Determination <span>·</span></div>
+    <div class="marquee-item">CBP Customs Compliance <span>·</span></div>
+    <div class="marquee-item">HS Code Classification <span>·</span></div>
+    <div class="marquee-item">Import Duty Optimization <span>·</span></div>
+    <div class="marquee-item">Document Cross-Validation <span>·</span></div>
+    <div class="marquee-item">Trade Compliance AI <span>·</span></div>
+    <div class="marquee-item">Entry Error Prevention <span>·</span></div>
+    <div class="marquee-item">Tariff Schedule Intelligence <span>·</span></div>
+    <div class="marquee-item">Origin Determination <span>·</span></div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="problem-section">
+    <div class="section-label">The Problem</div>
+    <h2 class="reveal">The container is already stuck. The penalty is already <em>filed.</em></h2>
+    <div class="problem-grid reveal">
+      <div class="problem-cell">
+        <div class="problem-num num-red">12–18%</div>
+        <div class="problem-unit">Entry error rate (manual)</div>
+        <p>Customs brokers manually key data from multiple documents into trade management systems, HS-coding from memory against tariff schedules that change every quarter.</p>
+      </div>
+      <div class="problem-cell">
+        <div class="problem-num num-blue">$4,200</div>
+        <div class="problem-unit">Avg cost per classification error</div>
+        <p>Each classification error triggers demurrage charges, CBP penalties, or re-export costs — none of which appear until the container is sitting in a bonded warehouse at $200/day.</p>
+      </div>
+      <div class="problem-cell">
+        <div class="problem-num num-teal">40 min</div>
+        <div class="problem-unit">Manual entry prep time per shipment</div>
+        <p>A single customs entry requires reconciling 5–9 documents from different parties, in different formats, in different languages — all before the freight deadline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section id="product">
+  <div class="product-section">
+    <div class="product-inner">
+      <div class="section-label">The Product</div>
+      <h2 class="reveal">Every document. Every field. Cross-validated in <em>minutes.</em></h2>
+      <div class="product-flow reveal">
+        <div class="flow-step">
+          <div class="flow-step-num">01 — Ingest</div>
+          <div class="flow-step-title">Documents in, any format</div>
+          <div class="flow-step-desc">Commercial invoices, bills of lading, packing lists, certificates of origin, phytosanitary certs — structured or not, in any language.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">02 — Extract & Ground</div>
+          <div class="flow-step-title">Semantic field extraction</div>
+          <div class="flow-step-desc">Every field traced to its source line and the applicable tariff regulation. Not OCR — trade document reasoning.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">03 — File Ready</div>
+          <div class="flow-step-title">Draft entry in 4 minutes</div>
+          <div class="flow-step-desc">Pre-audited customs entry draft the broker signs off on. Errors flagged before filing, not after detention.</div>
+        </div>
+      </div>
+      <div class="feature-grid reveal">
+        <div class="feature-card">
+          <div class="feature-icon icon-blue">🔍</div>
+          <h3>Cross-document validation</h3>
+          <p>Quantities, weights, values, and HS codes reconciled across every document in the packet. Mismatches flagged with source citations before the entry is filed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-teal">⚡</div>
+          <h3>Live tariff schedule sync</h3>
+          <p>Tariff schedules change quarterly. NerveSight keeps pace — every classification checked against the current national schedule, not last year's PDF.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-warm">🌍</div>
+          <h3>Origin determination engine</h3>
+          <p>Knows that "Made in Vietnam" on a Chinese-origin component triggers different rules. Applies the correct origin determination standard per importing country.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon icon-amber">📋</div>
+          <h3>Audit-ready documentation</h3>
+          <p>Every field, every decision, every source. If CBP ever comes knocking, your compliance trail is already built.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET -->
+<section id="market">
+  <div class="market-section">
+    <div class="section-label">Market Reality</div>
+    <h2 class="reveal">A $40B compliance burden running on <em>tribal knowledge.</em></h2>
+    <div class="market-layout">
+      <div class="market-stats reveal">
+        <div class="stat-row">
+          <div class="stat-label">Licensed US customs brokers (CHBs)</div>
+          <div class="stat-value blue">~19,000</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">CBP penalty revenue increase FY2024 (YoY)</div>
+          <div class="stat-value red">+31%</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">US import entries filed annually</div>
+          <div class="stat-value teal">35M+</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">Avg cost of a CBP penalty (small importer)</div>
+          <div class="stat-value amber">$11K</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">Section 301 tariff line changes since 2018</div>
+          <div class="stat-value blue">8,700+</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">Global trade compliance software market</div>
+          <div class="stat-value red">$1.9B</div>
+        </div>
+      </div>
+      <div class="market-text reveal">
+        <h3>The top 50 firms have compliance teams. The next 5,000 have Excel.</h3>
+        <p>The US customs industry is deeply bifurcated. Enterprise freight forwarders (Expeditors, Kuehne+Nagel) have compliance infrastructure. The 15,000+ independent CHBs with 2–12 employees do not. They run on QuickBooks, industry memory, and one person who knows the HS schedule "pretty well."</p>
+        <p>That cohort processes millions of entries per year. Every tariff change is a potential penalty event. Every new FTA triggers a new set of origin rules. And CBP's automated ACE system is getting better at pattern-matching misclassifications faster than manual processes can keep up.</p>
+        <ul class="insight-list">
+          <li class="insight-item">
+            <div class="insight-dot dot-accent"></div>
+            <p>USMCA, CBAM, and Section 301 changes have made "memorize the tariff schedule" an impossible strategy — the schedule is now a living document.</p>
+          </li>
+          <li class="insight-item">
+            <div class="insight-dot dot-accent"></div>
+            <p>Mid-market manufacturers with in-house import teams (Phase 2 target) are still running post-import compliance audits in spreadsheets, discovering errors 6 months after entry.</p>
+          </li>
+          <li class="insight-item">
+            <div class="insight-dot dot-accent"></div>
+            <p>The beachhead — independent US CHBs — is highly concentrated: ~4,000 firms handle 80% of mid-market import volume, all within 8 major port cities.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOAT -->
+<section id="moat">
+  <div class="moat-section">
+    <div class="moat-inner">
+      <div class="section-label">Why It Can't Be Copied</div>
+      <h2 class="reveal">Three compounding advantages that deepen with <em>every shipment.</em></h2>
+      <div class="moat-grid reveal">
+        <div class="moat-card" data-num="1">
+          <span class="moat-tag tag-blue">Data moat</span>
+          <h3>Ruling database as proprietary corpus</h3>
+          <p>Every discrepancy caught, every penalty avoided — anonymized — becomes a training signal. After 18 months, NerveSight's error-detection model is trained on more real customs disputes than any government database publishes publicly.</p>
+        </div>
+        <div class="moat-card" data-num="2">
+          <span class="moat-tag tag-teal">Technical moat</span>
+          <h3>Citation-grounded trade reasoning</h3>
+          <p>A generic LLM hallucinating HS codes with high confidence is worse than Excel. NerveSight's output is source-grounded: every field traces to a document line and a regulation clause. That's not a prompt — that's architecture.</p>
+        </div>
+        <div class="moat-card" data-num="3">
+          <span class="moat-tag tag-warm">Network moat</span>
+          <h3>Platform lock-in through operational dependency</h3>
+          <p>As brokers adopt NerveSight, their importer clients gain visibility into pre-audits. That importer then requires their next broker to be on NerveSight. Classic two-sided lock-in, built through value — not switching costs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section>
+  <div class="whynow-section">
+    <div class="section-label">Why Now</div>
+    <h2 class="reveal">Three forces converged. None of them existed together before <em>2024.</em></h2>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-date">2023 — Model Capability Unlock</div>
+        <h3>Multimodal document intelligence crossed the quality threshold</h3>
+        <p>Before GPT-4V and Opus-class models, OCR + extraction on heterogeneous trade documents had a 20%+ field error rate — worse than humans on complex packets. That's now under 3% with grounded extraction. The quality bar for commercial deployment just cleared.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2024 — Regulatory Volatility</div>
+        <h3>Tariff volatility became a permanent structural condition</h3>
+        <p>Section 301 tariffs, USMCA origin rule changes, EU Carbon Border Adjustment Mechanism, India BIS requirements — the tariff schedule is no longer a stable reference. It changes quarterly. Manual classification is now structurally impossible to keep current. This shift happened in 2024, not gradually over a decade.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2024–2025 — Enforcement Acceleration</div>
+        <h3>CBP penalty revenue up 31% year-over-year</h3>
+        <p>CBP is running automated pattern-matching audits via its ACE system. Small CHBs are receiving penalty notices they've never seen before. Fear is a real demand driver — and it's new. The first 50 customers don't need to be convinced the problem is real. They already have the penalty notice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section id="founder">
+  <div class="founder-section">
+    <div class="founder-inner">
+      <div class="founder-left">
+        <div class="section-label">The Founder</div>
+        <div class="founder-avatar">SJ</div>
+        <div class="founder-name">Saksham Jain</div>
+        <div class="founder-title">Founder & CEO, NerveSight</div>
+        <p class="founder-bio">Saksham built NerveSight from a problem he couldn't stop thinking about. Watching import operations run on tribal knowledge and manual entry — seeing penalties arrive months after containers cleared — convinced him that this wasn't a process problem. It was an information problem that AI could finally solve.</p>
+        <p class="founder-bio">He combines deep operational instincts with a technical conviction that grounded, citation-traceable AI is the only way to build something that actually belongs in a compliance workflow — where a confident wrong answer is worse than no answer at all.</p>
+        <div class="founder-quote">
+          <blockquote>"The container doesn't wait for your manual process to catch up. Neither does CBP."</blockquote>
+        </div>
+        <div class="founder-tags">
+          <span class="founder-tag">Trade Compliance</span>
+          <span class="founder-tag">AI Infrastructure</span>
+          <span class="founder-tag">B2B SaaS</span>
+          <span class="founder-tag">Customs Law</span>
+          <span class="founder-tag">Freight Operations</span>
+        </div>
+      </div>
+      <div class="founder-right">
+        <div class="founder-stat">
+          <div class="founder-stat-val">~$40B</div>
+          <div class="founder-stat-lbl">annual US trade compliance spend — largely still manual</div>
+        </div>
+        <div class="founder-stat">
+          <div class="founder-stat-val">35M+</div>
+          <div class="founder-stat-lbl">customs entries filed in the US each year</div>
+        </div>
+        <div class="founder-stat">
+          <div class="founder-stat-val">4 min</div>
+          <div class="founder-stat-lbl">NerveSight entry prep vs. 40 min manual average</div>
+        </div>
+        <div class="founder-stat">
+          <div class="founder-stat-val">&lt;3%</div>
+          <div class="founder-stat-lbl">field extraction error rate (vs. 12–18% manual)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">NerveSight</span>
+    <span class="footer-copy">AI Customs Intelligence · Built for the brokers who can't afford to get it wrong</span>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
